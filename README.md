@@ -7,3 +7,4 @@ Histogram Equalization method tends to introduce unnecessary visual deterioratio
 4. Equalize each partition independently. <br>
 5. Normalize the image brightness. <br>
 
+In this project three histogram equalization techinques are implemented namely BPDHE, CLAHE, Histogram Equalization. Applying the three techniques on a set of images and then calculating Average Absolute Mean Brightness Error shows that the error value for BPDHE is the lowest.
