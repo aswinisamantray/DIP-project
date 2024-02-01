@@ -1,6 +1,7 @@
 import cv2 as cv
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 def plot_hist(histogram,title):
     plt.bar(np.arange(256), histogram, width=1, color='gray')
@@ -30,18 +31,22 @@ def dynamic_histogram_equalization(img, clip_limit=3.0, grid_size=(8, 8)):
 
     return enhanced_img
 
-input_image = cv.imread('DIP_image.jpg')
-enhanced_image = dynamic_histogram_equalization(input_image)
+current_directory = os.getcwd()
+aambe=[]
+for filename in os.listdir(current_directory):
+    if filename.endswith(".jpg") or filename.endswith(".png"):
+            input_image = cv.imread(os.path.join(current_directory, filename))
+            enhanced_image = dynamic_histogram_equalization(input_image)
+            M_input_image=np.mean(input_image)
+            M_enhanced_image=np.mean(enhanced_image)
+            aambe.append(np.abs(M_input_image-M_enhanced_image))
 
-plot_hist(get_histogram(input_image),"Input image histogram")
-plot_hist(get_histogram(enhanced_image),"Output image histogram")
+print(np.mean(aambe))
 
-M_input_image=np.mean(input_image)
-M_enhanced_image=np.mean(enhanced_image)
-print(M_enhanced_image-M_input_image)
+# plot_hist(get_histogram(input_image),"Input image histogram")
+# plot_hist(get_histogram(enhanced_image),"Output image histogram")
+# plt.imshow(enhanced_image)
+# plt.title('Enhanced Image')
+# plt.axis('off')
 
-plt.imshow(enhanced_image)
-plt.title('Enhanced Image')
-plt.axis('off')
-
-plt.show()
+# plt.show()

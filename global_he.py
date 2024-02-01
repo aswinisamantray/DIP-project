@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
+import os
 
 def plot_hist(histogram,title):
     plt.bar(np.arange(256), histogram, width=1, color='gray')
@@ -48,19 +49,20 @@ def global_he(input_img):
     img_new = np.reshape(img_new, input_img.shape)
     return img_new
     
-input_img = np.asarray(Image.open('DIP_image.jpg'))
-enhanced_image=global_he(input_img)
-hist_in=get_histogram(input_img)
-hist_out=get_histogram(enhanced_image)
-plot_hist(hist_in,"Input image histogram")
-plot_hist(hist_out,"Output image histogram")
+current_directory = os.getcwd()
+aambe=[]
+for filename in os.listdir(current_directory):
+    if filename.endswith(".jpg") or filename.endswith(".png"):
+            input_image = np.asarray(Image.open(os.path.join(current_directory, filename)))
+            enhanced_image = global_he(input_image)
+            M_input_image=np.mean(input_image)
+            M_enhanced_image=np.mean(enhanced_image)
+            aambe.append(np.abs(M_input_image-M_enhanced_image))
 
-M_input_image=np.mean(input_img)
-M_enhanced_image=np.mean(enhanced_image)
-print(M_enhanced_image-M_input_image)
+print(np.mean(aambe))
 
-# Display the result image
-plt.imshow(enhanced_image)
-plt.title('Enhanced Image')
-plt.axis('off')
-plt.show()
+# # Display the result image
+# plt.imshow(enhanced_image)
+# plt.title('Enhanced Image')
+# plt.axis('off')
+# plt.show()
